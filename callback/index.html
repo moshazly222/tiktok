@@ -23,7 +23,11 @@
   const out = document.getElementById('out');
   const code = p.get('code');
   const err = p.get('error');
-  if (code) {
+  const state = p.get('state') || '';
+  if ((code || err) && state.startsWith('local-')) {
+    out.textContent = 'Returning to Valeaxia Uploader…';
+    location.replace('http://127.0.0.1:5005/callback' + location.search);
+  } else if (code) {
     out.innerHTML = '<p>Authorization code (paste it into the script):</p><code id="c"></code><button id="b">Copy</button>';
     document.getElementById('c').textContent = code;
     document.getElementById('b').onclick = () => navigator.clipboard.writeText(code).then(() => b.textContent = 'Copied');
